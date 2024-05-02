@@ -1,0 +1,17 @@
+WITH search AS (
+    SELECT
+        hacker_id,
+        challenge_id,
+        MAX(score) AS max_score
+    FROM Submissions
+    GROUP BY hacker_id,  challenge_id
+)
+SELECT
+    s.hacker_id,
+    h.name,
+    SUM(max_score) AS sum_max_score   
+FROM search AS s
+INNER JOIN Hackers AS h ON h.hacker_id = s.hacker_id
+GROUP BY s.hacker_id, h.name
+HAVING SUM(max_score) >0
+ORDER BY sum_max_score DESC, s.hacker_id;
