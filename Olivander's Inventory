@@ -1,0 +1,20 @@
+WITH search AS (
+SELECT 
+    id,
+    age,
+    coins_needed,
+    power,
+    MIN(coins_needed) OVER (PARTITION BY age,power) AS min_coins
+FROM Wands AS w
+INNER JOIN Wands_Property AS p ON p.code = w.code
+WHERE is_evil = 0
+GROUP BY id, age, coins_needed,power
+)
+SELECT 
+    id,
+    age,
+    coins_needed,
+    power
+FROM search
+WHERE coins_needed = min_coins 
+ORDER BY power DESC, age DESC;
