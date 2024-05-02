@@ -1,0 +1,19 @@
+WITH search AS(
+SELECT 
+    h.hacker_id AS hacker_id,
+    h.name AS hacker_name,
+    COUNT(s.hacker_id) AS count_full_answer     
+FROM
+    Submissions AS s
+INNER JOIN Hackers AS h ON h.hacker_id = s.hacker_id
+INNER JOIN  Challenges AS c ON c.challenge_id = s.challenge_id
+INNER JOIN Difficulty AS d ON d.difficulty_level = c.difficulty_level
+WHERE s.score = d.score
+GROUP BY h.hacker_id,h.name
+)
+SELECT
+    hacker_id,
+    hacker_name  
+FROM search
+WHERE count_full_answer > 1
+ORDER BY count_full_answer DESC, hacker_id;
