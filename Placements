@@ -1,0 +1,24 @@
+/*----------- SOLUTION 1 ----------- */
+
+SELECT
+    name
+FROM
+    students as s 
+INNER JOIN Friends f ON f.ID = s.ID
+INNER JOIN  Packages p1 ON p1.ID = s.ID
+INNER JOIN Packages p2 ON p2.ID = f.Friend_ID
+WHERE
+    p2.Salary > p1.Salary
+ORDER BY
+    p2.Salary;
+
+/*----------- SOLUTION 2 ----------- */
+
+SELECT
+    Name
+FROM 
+    Students s
+INNER JOIN Packages p ON p.ID = s.ID
+INNER JOIN Friends f ON f.ID = p.ID
+WHERE Salary < (SELECT Salary FROM Packages WHERE ID = Friend_ID)
+ORDER BY  (SELECT Salary FROM Packages WHERE ID = Friend_ID);
